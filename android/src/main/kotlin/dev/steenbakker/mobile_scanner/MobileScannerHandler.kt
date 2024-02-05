@@ -82,7 +82,13 @@ class MobileScannerHandler(
         methodChannel = MethodChannel(binaryMessenger,
             "dev.steenbakker.mobile_scanner/scanner/method")
         methodChannel!!.setMethodCallHandler(this)
-        mobileScanner = MobileScanner(activity, textureRegistry, callback, errorCallback)
+        mobileScanner = MobileScanner(
+            activity,
+            textureRegistry,
+            callback,
+            errorCallback,
+            activity.resources.configuration.orientation
+        )
     }
 
     fun dispose(activityPluginBinding: ActivityPluginBinding) {

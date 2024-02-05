@@ -2,6 +2,7 @@ package dev.steenbakker.mobile_scanner
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.Rect
@@ -41,7 +42,8 @@ class MobileScanner(
     private val activity: Activity,
     private val textureRegistry: TextureRegistry,
     private val mobileScannerCallback: MobileScannerCallback,
-    private val mobileScannerErrorCallback: MobileScannerErrorCallback
+    private val mobileScannerErrorCallback: MobileScannerErrorCallback,
+    private val orientation: Int
 ) {
 
     /// Internal variables
@@ -170,8 +172,15 @@ class MobileScanner(
     ): Boolean {
         val barcodeBoundingBox = barcode.boundingBox ?: return false
 
-        val imageWidth = inputImage.height
-        val imageHeight = inputImage.width
+        val imageWidth: Int
+        val imageHeight: Int
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            imageWidth = inputImage.width
+            imageHeight = inputImage.height
+        } else {
+            imageWidth = inputImage.height
+            imageHeight = inputImage.width
+        }
 
         val left = (scanWindow[0] * imageWidth).roundToInt()
         val top = (scanWindow[1] * imageHeight).roundToInt()
